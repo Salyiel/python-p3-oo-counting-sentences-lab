@@ -1,11 +1,21 @@
 #!/usr/bin/env python3
+import io
+import sys
 
 class MyString:
     def __init__(self, value=''):
-        if isinstance(value, str):
-            self.value = value
+        self.value = value  # This will use the setter method for validation
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, new_value):
+        if isinstance(new_value, str):
+            self._value = new_value
         else:
-            raise ValueError("Value must be a string")
+            print("The value must be a string.")
 
     def is_sentence(self):
         return self.value.endswith('.')
@@ -18,9 +28,7 @@ class MyString:
 
     def count_sentences(self):
         import re
-        # Replace multiple punctuation marks with a single period
         normalized_value = re.sub(r'[.!?]+', '.', self.value)
-        # Split the string by period
         sentences = [s.strip() for s in normalized_value.split('.') if s.strip()]
         return len(sentences)
     pass
